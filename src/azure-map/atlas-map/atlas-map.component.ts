@@ -88,22 +88,28 @@ export class AtlasMapComponent implements OnInit, AfterContentInit, OnChanges {
     this.popupView = this.popupsContainer.createEmbeddedView(this.popupTemplate, context);
   }
 
+  pinLayerOptions(item): PinLayerOptions {
+    const pinOptions: PinLayerOptions = {
+      name: item.layer,
+      cluster: false, // true if you want join points
+      clusterIcon: 'pin-round-blue',
+      textFont: 'SegoeUi-Bold',
+      textOffset: [0, 17],
+    };
+    return pinOptions;
+  }
+
   createPoints(): void {
-    if (this.features != null) {
+    try {
       for (const item of this.features) {
-        this.map.addPins([item.atlasFeature], {
-          name: item.layer,
-          cluster: false, // true if you want join points
-          clusterIcon: 'pin-round-blue',
-          textFont: 'SegoeUi-Bold',
-          textOffset: [0, 17],
-        });
+        this.map.addPins([item.atlasFeature], this.pinLayerOptions(item));
       }
       this.createPopups();
-    } else {
-      console.log('Please add your data!');
+    } catch (error) {
+      console.log('Please add data!', error);
     }
   }
+
 
   createPopups(): void {
     for (const item of this.findUniqueLayers()) {

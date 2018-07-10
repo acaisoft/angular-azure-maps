@@ -78,10 +78,12 @@ mergeDataPoint(data) {
 Our AtlasMapComponent will create your map canvas, and add your Map Elements to map through added pins on it.<br>
 Also can added PopUps on pins through atlas-popup directive and ng-template in your parent component html file:
 ```html
+<am-map>
 <ng-template amPopup
              let-dataElement="dataElement">
   <!--Item you want to show in popup-->
 </ng-template>
+</am-map>
 ```
 
 
