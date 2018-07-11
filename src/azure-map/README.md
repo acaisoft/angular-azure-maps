@@ -82,6 +82,8 @@ Also can added PopUps on pins through atlas-popup directive and ng-template in y
 <ng-template amPopup
              let-dataElement="dataElement">
   <!--Item you want to show in popup-->
+  <!--<div>{{ dataElement.name}}</div>-->
+  <!--<div> {{ dataElement.status }}</div>-->
 </ng-template>
 </am-map>
 ```

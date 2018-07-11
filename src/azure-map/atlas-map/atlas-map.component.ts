@@ -27,8 +27,20 @@ export class AtlasMapComponent implements OnInit, AfterContentInit, OnChanges {
   private popupView: EmbeddedViewRef<any>;
   private popupAtlas: atlas.Popup = new atlas.Popup();
 
-
   private map: atlas.Map;
+
+  // PIN CONFIG:
+  // You don't have to use all
+  private cluster = true; // true if you want join points
+  private clusterIcon = 'pin-blue';
+  private fontSize = 14;
+  private icon = 'pin-darkblue';
+  private iconSize = 1;
+  private name = 'default-pins';  // name for separate pins
+  private textFont = 'SegoeUi-Bold';
+  private textOffset: number[] = [0, 0]; // An array of [pixelsRight, pixelsDown] for how many pixels to the right and down the title text should be offset
+  private title = '';
+
 
   constructor() {
   }
@@ -91,10 +103,10 @@ export class AtlasMapComponent implements OnInit, AfterContentInit, OnChanges {
   pinLayerOptions(item): PinLayerOptions {
     const pinOptions: PinLayerOptions = {
       name: item.layer,
-      cluster: false, // true if you want join points
-      clusterIcon: 'pin-round-blue',
-      textFont: 'SegoeUi-Bold',
-      textOffset: [0, 17],
+      cluster: this.cluster,
+      clusterIcon: this.clusterIcon,
+      textFont: this.textFont,
+      textOffset: this.textOffset
     };
     return pinOptions;
   }

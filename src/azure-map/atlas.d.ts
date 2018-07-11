@@ -150,13 +150,10 @@ declare interface PinLayerOptions extends LayerOptions {
   clusterIcon?: string; // default: undefined
   fontColor?: string; // default: '#000'
   fontSize?: number; // default: 14
-  icon?: 'pin-darkblue' | 'pin-blue' | 'pin-red'
-    | 'pin-round-darkblue' | 'pin-round-blue' | 'pin-round-red'
-    | 'none'; // default: 'pin-darkblue'
+  icon?: string; // 'pin-darkblue' | 'pin-blue' | 'pin-red'| 'pin-round-darkblue' | 'pin-round-blue' |// 'pin-round-red'| 'none'; default: 'pin-darkblue'
   iconSize?: number; // default: 1
   name?: string; // default: 'default-pins'
-  textFont?: 'SegoeUi-Bold' | 'SegoeUi-Regular' |
-    'StandardFont-Bold' | 'StandardFont-Regular'; // default: 'SegoeUi-Regular'
+  textFont?: string; // 'SegoeUi-Bold' | 'SegoeUi-Regular' | 'StandardFont-Bold' | 'StandardFont-Regular'; default: 'SegoeUi-Regular'
   textOffset?: number[]; // default: [0,0]
   title?: string; // default: ''
 }
