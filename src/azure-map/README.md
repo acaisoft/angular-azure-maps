@@ -68,7 +68,7 @@ Example for PinLaterOptions:
 ```ts
   dataLayerOptions(item): PinLayerOptions {
     const pinOptions: PinLayerOptions = {
-      name: item.layer,
+      name: item,
       cluster: false, // true if you want join points
       clusterIcon: 'pin-round-blue',
       textFont: 'SegoeUi-Bold',
