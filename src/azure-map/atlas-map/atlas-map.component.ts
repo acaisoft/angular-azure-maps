@@ -29,17 +29,6 @@ export class AtlasMapComponent implements OnInit, AfterContentInit, OnChanges {
 
   private map: atlas.Map;
 
-  // PIN CONFIG:
-  // You don't have to use all
-  private cluster = true; // true if you want join points
-  private clusterIcon = 'pin-blue';
-  private fontSize = 14;
-  private icon = 'pin-darkblue';
-  private iconSize = 1;
-  private name = 'default-pins';  // name for separate pins
-  private textFont = 'SegoeUi-Bold';
-  private textOffset: number[] = [0, 0]; // An array of [pixelsRight, pixelsDown] for how many pixels to the right and down the title text should be offset
-  private title = '';
 
 
   constructor() {
@@ -100,28 +89,16 @@ export class AtlasMapComponent implements OnInit, AfterContentInit, OnChanges {
     this.popupView = this.popupsContainer.createEmbeddedView(this.popupTemplate, context);
   }
 
-  pinLayerOptions(item): PinLayerOptions {
-    const pinOptions: PinLayerOptions = {
-      name: item.layer,
-      cluster: this.cluster,
-      clusterIcon: this.clusterIcon,
-      textFont: this.textFont,
-      textOffset: this.textOffset
-    };
-    return pinOptions;
-  }
-
   createPoints(): void {
     try {
       for (const item of this.features) {
-        this.map.addPins([item.atlasFeature], this.pinLayerOptions(item));
+        this.map.addPins([item.atlasFeature], item.pinConfig);
       }
       this.createPopups();
     } catch (error) {
       console.log('Please add data!', error);
     }
   }
-
 
   createPopups(): void {
     for (const item of this.findUniqueLayers()) {

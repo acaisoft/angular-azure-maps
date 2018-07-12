@@ -38,6 +38,7 @@ interface AmFeature {
   dataElement: any; // Data element
   atlasFeature: atlas.data.Feature; // Map's features object
   layer: string; // Layer for different object
+  pinConfig: PinLayerOptions;
 }
 ```
 <br>
@@ -62,6 +63,22 @@ Example for simple Point:
 
 <br>
 
+
+Example for PinLaterOptions:
+```ts
+  dataLayerOptions(item): PinLayerOptions {
+    const pinOptions: PinLayerOptions = {
+      name: item.layer,
+      cluster: false, // true if you want join points
+      clusterIcon: 'pin-round-blue',
+      textFont: 'SegoeUi-Bold',
+      textOffset: [0, 17],
+    };
+    return pinOptions;
+  }
+```
+<br>
+
 And merge it do AmFeature type:
 ```ts
 mergeDataPoint(data) {
@@ -69,6 +86,7 @@ mergeDataPoint(data) {
       dataElement: data,
       atlasFeature: this.dataPointsInit(data),
       layer: data.type
+      pinConfig: this.dataLayerOptions(data.type)
     }as AmFeature;
   }
 ```
@@ -78,13 +96,17 @@ mergeDataPoint(data) {
 Our AtlasMapComponent will create your map canvas, and add your Map Elements to map through added pins on it.<br>
 Also can added PopUps on pins through atlas-popup directive and ng-template in your parent component html file:
 ```html
-<am-map>
+<am-map
+  [initialConfig]="config"
+  [features]="amFeatures">
+  
 <ng-template amPopup
              let-dataElement="dataElement">
   <!--Item you want to show in popup-->
   <!--<div>{{ dataElement.name}}</div>-->
   <!--<div> {{ dataElement.status }}</div>-->
 </ng-template>
+
 </am-map>
 ```
 
