@@ -1,4 +1,3 @@
-/// <reference path="../atlas.d.ts" />
 import {
   AfterContentInit,
   Component,
