@@ -1,3 +1,4 @@
+/// <reference path="../atlas.d.ts" />
 import {
   AfterContentInit,
   Component,
@@ -19,7 +20,7 @@ import {AtlasPopupDirective} from '../directives/atlas-popup.directive';
 })
 export class AtlasMapComponent implements OnInit, AfterContentInit, OnChanges {
   @Input() features: AmFeature[];
-  @Input() initialConfig: AmConfig;
+  @Input() initialConfig: ServiceOptions & CameraOptions & StyleOptions & UserInteractionOptions;
 
   @ViewChild('popupsContainer', {read: ViewContainerRef}) popupsContainer: ViewContainerRef;
   @ContentChild(AtlasPopupDirective, {read: TemplateRef}) popupTemplate: TemplateRef<any>;

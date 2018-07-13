@@ -1,2 +1,2 @@
 
-declare type AmConfig = ServiceOptions & CameraOptions & StyleOptions & UserInteractionOptions;
+// declare type AmConfig = ;

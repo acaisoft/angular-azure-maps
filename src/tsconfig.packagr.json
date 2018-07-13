@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "es2015",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "inlineSourceMap": false,
+    "inlineSources": true,
+    "declaration": true,
+    "lib": ["es2015"],
+    "outDir": "../dist",
+    "experimentalDecorators": true,
+    "noEmitOnError": true,
+    "noImplicitAny": false,
+    "skipLibCheck": true,
+    "types": ["node"],
+    "typeRoots": ["../node_modules/@types"]
+  },
+  "files": ["public_api.ts"],
+  "exclude": ["**/*.spec.ts"]
+}
