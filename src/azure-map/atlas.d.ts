@@ -5,7 +5,7 @@ declare namespace atlas {
 
   class Map {
     constructor(container: string,
-                options: AmConfig)
+                options: ServiceOptions & CameraOptions & StyleOptions & UserInteractionOptions)
 
     addPins(pins: Feature[],
             options?: PinLayerOptions);
