@@ -1,6 +1,18 @@
 {
-  "name": "angular-azure-maps",
-  "version": "0.0.0",
+  "name": "@acaisoft/angular-azure-maps",
+  "version": "0.0.1",
+  "description": "This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.0.8.",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Acaisoft/angular-azure-maps.git"
+  },
+  "author": "Maciej Sawicki <maciej.sawicki@acaisoft.com> (https://acaisoft.com)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Acaisoft/angular-azure-maps/issues"
+  },
+  "homepage": "https://github.com/Acaisoft/angular-azure-maps#readme",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -8,10 +20,10 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "packagr": "ng-packagr -p ng-package.json"
+    "packagr": "ng-packagr -p ng-package.json",
+    "publish": "npm publish dist --access public"
   },
   "private": false,
-
   "dependencies": {
     "@angular/animations": "^6.0.3",
     "@angular/common": "^6.0.3",
