@@ -1,3 +1,5 @@
+/// <reference path="../../../atlas"/>
+
 import {
   AfterContentInit,
   Component,
@@ -51,7 +53,7 @@ export class AtlasMapComponent implements OnInit, AfterContentInit, OnChanges {
 
   createMap(): void {
     try {
-      this.map = new atlas.Map('map', this.initialConfig);
+      this.map = new atlas.Map('map',{'subscription-key': 'your key'});
     } catch (e) {
       console.log('ADD YOUR CONFIG!', e);
     }
