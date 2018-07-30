@@ -1,3 +1,5 @@
+/// <reference path="../../../atlas"/>
+
 import {
   AfterContentInit,
   Component,

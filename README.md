@@ -23,7 +23,7 @@ Second is your data with map's items that you can add on map
 Your config should look like:
 
 ```ts
-public config: AmConfig = {
+public config = {
     'subscription-key': 'your-key',
     'interactive': true,
   };
