@@ -33,6 +33,7 @@ export class AtlasMapComponent implements OnInit, AfterContentInit, OnChanges {
 
 
 
+
   constructor() {
   }
 
@@ -53,7 +54,7 @@ export class AtlasMapComponent implements OnInit, AfterContentInit, OnChanges {
 
   createMap(): void {
     try {
-      this.map = new atlas.Map('map',{'subscription-key': 'your key'});
+      this.map = new atlas.Map('map', this.initialConfig);
     } catch (e) {
       console.log('ADD YOUR CONFIG!', e);
     }
