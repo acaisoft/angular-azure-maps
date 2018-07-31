@@ -3,10 +3,10 @@
 import {
   AfterContentInit,
   Component,
-  ContentChild, EmbeddedViewRef,
+  ContentChild, ElementRef, EmbeddedViewRef, EventEmitter,
   Input,
   OnChanges,
-  OnInit, SimpleChanges,
+  OnInit, Output, SimpleChanges,
   TemplateRef,
   ViewChild,
   ViewContainerRef,
@@ -20,10 +20,14 @@ import {AtlasPopupDirective} from '../directives/atlas-popup.directive';
   styleUrls: ['./atlas-map.component.css']
 })
 export class AtlasMapComponent implements OnInit, AfterContentInit, OnChanges {
-  @Input() features: AmFeature[];
-  @Input() initialConfig: ServiceOptions & CameraOptions & StyleOptions & UserInteractionOptions;
+  @Input() features: AmFeature[] = [];
+  @Input() initialConfig: any;
+  @Input() _id: string = 'maaapp'
+
+  @Output() onMapClick = new EventEmitter<atlas.data.Position>();
 
   @ViewChild('popupsContainer', {read: ViewContainerRef}) popupsContainer: ViewContainerRef;
+  @ViewChild('mapWrapper', {read: ElementRef}) mapWrapper: ElementRef;
   @ContentChild(AtlasPopupDirective, {read: TemplateRef}) popupTemplate: TemplateRef<any>;
 
   private popupView: EmbeddedViewRef<any>;
@@ -39,6 +43,8 @@ export class AtlasMapComponent implements OnInit, AfterContentInit, OnChanges {
   }
 
   ngAfterContentInit(): void {
+
+
     this.createPoints(); // Create points on map
     this.findLocation(); // Click log position
   }
@@ -51,7 +57,10 @@ export class AtlasMapComponent implements OnInit, AfterContentInit, OnChanges {
 
   createMap(): void {
     try {
-      this.map = new atlas.Map('map',{'subscription-key': 'sXOVyAROGrH9wilAyNiTS0aPVKO_h6zSrYD5k_vGmgU'});
+      this.mapWrapper.nativeElement.setAttribute('id', this._id)
+      // const element = document.getElementById('map');
+      // element.setAttribute('id', this._id);
+      this.map = new atlas.Map(this._id, this.initialConfig);
     } catch (e) {
       console.log('ADD YOUR CONFIG!', e);
     }
@@ -77,8 +86,8 @@ export class AtlasMapComponent implements OnInit, AfterContentInit, OnChanges {
 
   findLocation(): void {
     this.map.addEventListener('click', (e) => {
-      console.log(e.position);
-      // On click you get geoPosition from map
+      this.onMapClick.emit(e.position);
+      // On click you emit positon
     });
   }
 
@@ -90,14 +99,15 @@ export class AtlasMapComponent implements OnInit, AfterContentInit, OnChanges {
   }
 
   createPoints(): void {
-    try {
-      for (const item of this.features) {
-        this.map.addPins([item.atlasFeature], item.pinConfig);
-      }
-      this.createPopups();
-    } catch (error) {
-      console.log('Please add data!', error);
+    if (this.features.length === 0) {
+      console.log('No data available');
+      return;
     }
+
+    for (const item of this.features) {
+      this.map.addPins([item.atlasFeature], item.pinConfig);
+    }
+    this.createPopups();
   }
 
   createPopups(): void {
