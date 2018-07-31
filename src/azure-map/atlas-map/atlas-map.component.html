@@ -1,5 +1,11 @@
 <div id="map"></div>
 
+<div *ngIf="addMode" ><
+  <div class="buttonn">
+    <button (click)="confirmPoint()">CONFIRM</button>
+  </div>
+  <p class="textArea"> {{ msg }}</p>
+</div>
 <div id="popupWrapper">
   <div #popupsContainer>
   </div>

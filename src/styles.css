@@ -1,1 +1,51 @@
-/* You can add global styles to this file, and also import other style files */
+.pulse {
+  content: url("assets/online.svg");
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  /*background: cornflowerblue;*/
+  pointer-events: none;
+  animation: mapboxgl-user-location-dot-pulse 2s infinite;
+}
+
+.storage {
+  content: url("assets/storage_pool.svg");
+  width: 30px;
+  height: 30px;
+  pointer-events: none;
+}
+
+.itemPulse {
+  width: 14px;
+  height: 14px;
+  /*background: #664bed;*/
+  /*border-radius: 50%;*/
+  content: url("/assets/pakiet.svg");
+}
+
+.itemPulseBig {
+  width: 24px;
+  height: 24px;
+  /*background: #664bed;*/
+  /*border-radius: 50%;*/
+  content: url("/assets/pakiet.svg");
+}
+
+.customInfobox {
+  max-width: 200px;
+  padding: 10px;
+  font-size: 12px;
+}
+
+.customInfobox .name {
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.offline {
+  content: url("assets/offline.svg");
+  width: 16px;
+  height: 16px;
+  pointer-events: none;
+}

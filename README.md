@@ -12,8 +12,12 @@ To wrap this module you can add in your template:
 ```html
 <am-map
   [initialConfig]="config"
-  [features]="amFeatures">
-  </am-map>
+  [features]="amFeatures"
+  [_id]="id1" // for multiple maps 
+  [addMode]="true" // adding mode
+  (adress)="displayThis($event)" 
+  (position)="displayThis($event)"
+  >
 ```
 First input is your config to create map. Look 
 [Map Init].

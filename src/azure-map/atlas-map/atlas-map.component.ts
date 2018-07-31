@@ -3,10 +3,10 @@
 import {
   AfterContentInit,
   Component,
-  ContentChild, EmbeddedViewRef,
+  ContentChild, EmbeddedViewRef, EventEmitter,
   Input,
   OnChanges,
-  OnInit, SimpleChanges,
+  OnInit, Output, SimpleChanges,
   TemplateRef,
   ViewChild,
   ViewContainerRef,
@@ -22,6 +22,11 @@ import {AtlasPopupDirective} from '../directives/atlas-popup.directive';
 export class AtlasMapComponent implements OnInit, AfterContentInit, OnChanges {
   @Input() features: AmFeature[];
   @Input() initialConfig: ServiceOptions & CameraOptions & StyleOptions & UserInteractionOptions;
+  @Input() _id: string;
+  @Input() addMode: boolean;
+
+  @Output() adress = new EventEmitter<any>();
+  @Output() position = new EventEmitter<atlas.data.Position>();
 
   @ViewChild('popupsContainer', {read: ViewContainerRef}) popupsContainer: ViewContainerRef;
   @ContentChild(AtlasPopupDirective, {read: TemplateRef}) popupTemplate: TemplateRef<any>;
@@ -31,19 +36,37 @@ export class AtlasMapComponent implements OnInit, AfterContentInit, OnChanges {
 
   private map: atlas.Map;
 
+  // TO EDIT MODE
+  private msg: string;
+  private address: any;
+  private newPos: atlas.data.Position = null;
 
+  // TO CHANGES
+  private lineArray: string[] = [];
+  private coordsArray: any[] = [];
+  private actualLines: string[] = [];
+  private end = false;
+  private endPointAnimate = false;
+  private stop = false;
+
+
+  private mapCanvas;
 
 
   constructor() {
   }
 
   ngOnInit(): void {
+    const element = document.getElementById('map');
+    element.setAttribute('id', this._id); // For multiple map
+
     this.createMap();
   }
 
   ngAfterContentInit(): void {
     this.createPoints(); // Create points on map
     this.findLocation(); // Click log position
+    this.changeCursor(this.findUniqueLayers()[0]); // Change curson when on point
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -55,6 +78,7 @@ export class AtlasMapComponent implements OnInit, AfterContentInit, OnChanges {
   createMap(): void {
     try {
       this.map = new atlas.Map('map', this.initialConfig);
+      this.mapCanvas = this.map.getCanvas();
     } catch (e) {
       console.log('ADD YOUR CONFIG!', e);
     }
@@ -79,9 +103,84 @@ export class AtlasMapComponent implements OnInit, AfterContentInit, OnChanges {
   }
 
   findLocation(): void {
-    this.map.addEventListener('click', (e) => {
-      console.log(e.position);
-      // On click you get geoPosition from map
+    if (this.addMode) {
+      // Adding new point on map
+      this.map.addEventListener('click', (e) => {
+        console.log(e.position);
+        const xhttp = new XMLHttpRequest();
+        let url = 'https://atlas.microsoft.com/search/address/reverse/json?';
+        url += '&api-version=1.0';
+        url += '&query=' + e.position[1] + ',' + e.position[0];
+        url += '&subscription-key=' + this.initialConfig['subscription-key'];
+        xhttp.open('GET', url, true);
+        xhttp.send();
+
+        xhttp.onreadystatechange = () => {
+          if (xhttp.readyState === 4 && xhttp.status === 200) {
+            const response = JSON.parse(xhttp.responseText);
+            if (response.addresses.length !== 0) {
+              console.log(response.addresses[0]);
+              this.address = response.addresses[0].address;
+              const coords = e;
+              this.newPos = this.splitToCoords(coords);
+              this.addNewPoint();
+
+            } else {
+              this.msg = 'No address for that location! Try again';
+              console.log('No address for that location!');
+            }
+          }
+        };
+
+      });
+    } else {
+      this.map.addEventListener('click', (e) => {
+        console.log(e.position);
+        // On click you get geoPosition from map
+      });
+    }
+  }
+
+  addNewPoint(): void {
+    if (this.newPos !== null) {
+      const point = new atlas.data.Point(this.newPos);
+
+      const feature = new atlas.data.Feature(point, {
+        title: this.address.freeformAddress,
+        icon: 'pin-round-blue',
+        overwrite: true
+      });
+
+      this.map.addPins([feature], {
+        name: 'newPin',
+        textOffset: [0, 25],
+        textFont: 'StandardFont-Bold',
+        overwrite: true
+      });
+
+      this.msg = 'Succes! For confirm click button!';
+    } else {
+      this.msg = 'Please first select point!';
+      console.log('SELECT POINT!');
+    }
+
+  }
+
+  confirmPoint(): void {
+    this.adress.emit(this.address.freeformAddress);
+    this.position.emit(this.newPos);
+  }
+
+  splitToCoords(e): atlas.data.Position {
+    return new atlas.data.Position(e.position[0], e.position[1]);
+  }
+
+  changeCursor(value): void {
+    this.map.addEventListener('mouseleave', value, (e) => {
+      this.map.getCanvas().style.cursor = '';
+    });
+    this.map.addEventListener('mouseover', value, (e) => {
+      this.map.getCanvas().style.cursor = 'pointer';
     });
   }
 
@@ -130,6 +229,21 @@ export class AtlasMapComponent implements OnInit, AfterContentInit, OnChanges {
       this.map.removeLayers(this.findUniqueLayers());
       this.createPoints();
     }
+  }
+
+  layersAndPointsRemover(): void {
+
+    console.log('lineLayer:', this.lineArray);
+    if (this.lineArray !== []) {
+      this.map.removeLayers(this.lineArray);
+    }
+    console.log('lineLayer:', this.actualLines);
+    if (this.actualLines !== []) {
+      this.map.removeLayers(this.actualLines);
+    }
+    this.lineArray.splice(0, this.lineArray.length);
+    this.coordsArray.splice(0, this.coordsArray.length);
+    this.stop = true;
   }
 
 
