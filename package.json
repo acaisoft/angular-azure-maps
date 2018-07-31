@@ -1,14 +1,13 @@
 {
   "name": "@acaisoft/angular-azure-maps",
-  "version": "0.0.3",
-  "description": "This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.0.8.",
+  "version": "0.0.4",
+  "description": "Azure Maps Angular wrapper",
   "main": "index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Acaisoft/angular-azure-maps.git"
   },
-  "author": "Maciej Sawicki <maciej.sawicki@acaisoft.com> (https://acaisoft.com)",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/Acaisoft/angular-azure-maps/issues"
   },
