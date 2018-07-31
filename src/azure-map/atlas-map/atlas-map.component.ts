@@ -29,10 +29,7 @@ export class AtlasMapComponent implements OnInit, AfterContentInit, OnChanges {
   private popupView: EmbeddedViewRef<any>;
   private popupAtlas: atlas.Popup = new atlas.Popup();
 
-  private map: atlas.Map;
-
-
-
+  public map: atlas.Map;
 
   constructor() {
   }
