@@ -22,7 +22,7 @@ import {AtlasPopupDirective} from '../directives/atlas-popup.directive';
 export class AtlasMapComponent implements OnInit, AfterContentInit, OnChanges {
   @Input() features: AmFeature[] = [];
   @Input() initialConfig: any;
-  @Input() _id: string = 'maaapp'
+  @Input() _id: string;
 
   @Output() onMapClick = new EventEmitter<atlas.data.Position>();
 
@@ -43,10 +43,8 @@ export class AtlasMapComponent implements OnInit, AfterContentInit, OnChanges {
   }
 
   ngAfterContentInit(): void {
-
-
     this.createPoints(); // Create points on map
-    this.findLocation(); // Click log position
+    this.startMapClickListener(); // Click log position
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -58,8 +56,6 @@ export class AtlasMapComponent implements OnInit, AfterContentInit, OnChanges {
   createMap(): void {
     try {
       this.mapWrapper.nativeElement.setAttribute('id', this._id)
-      // const element = document.getElementById('map');
-      // element.setAttribute('id', this._id);
       this.map = new atlas.Map(this._id, this.initialConfig);
     } catch (e) {
       console.log('ADD YOUR CONFIG!', e);
@@ -84,7 +80,7 @@ export class AtlasMapComponent implements OnInit, AfterContentInit, OnChanges {
     return Array.from(new Set(allLayers));
   }
 
-  findLocation(): void {
+  startMapClickListener(): void {
     this.map.addEventListener('click', (e) => {
       this.onMapClick.emit(e.position);
       // On click you emit positon
