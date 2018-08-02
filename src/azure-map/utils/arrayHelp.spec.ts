@@ -1,11 +1,13 @@
 import {arrayDiff} from './arrayHelp';
 
 describe('arrayDiff', () => {
-  it('should return null', function () {
+  it('should return two empty array', function () {
     const result = arrayDiff([], []);
 
-    expect(result).toBe(null);
-
+    expect(result).toEqual({
+      added: [],
+      deleted: [],
+    });
   });
   it('should return empty added and 1 added value', function () {
     const result = arrayDiff([1, 2], [1]);
@@ -34,8 +36,8 @@ describe('arrayDiff', () => {
     });
   });
   it('should return 1 deleted object and 2 object added', function () {
-    const first: Foo[] = [{name: 'rom', type: 'das'}];
-    const scnd: Foo[] = [{name: 'Tas', type: 'vgas'}, {name: 'htfda', type: 'wwa'}];
+    const first = [{name: 'rom', type: 'das'}];
+    const scnd = [{name: 'Tas', type: 'vgas'}, {name: 'htfda', type: 'wwa'}];
     const result = arrayDiff(first, scnd);
 
     expect(result).toEqual({
@@ -45,18 +47,13 @@ describe('arrayDiff', () => {
 
   });
   it('should return 1 deleted object and 1 object added', function () {
-    const first: Foo[] = [{name: 'rom', type: 'das'}, {name: 'dasd', type: 'daegfasds'}]; // old
-    const scnd: Foo[] = [{name: 'rom', type: 'das'}, {name: 'htfda', type: 'wwa'}]; // new
+    const first = [{name: 'rom', type: 'das'}, {name: 'dasd', type: 'daegfasds'}]; // old
+    const scnd = [{name: 'rom', type: 'das'}, {name: 'htfda', type: 'wwa'}]; // new
     const result = arrayDiff(first, scnd);
 
     expect(result).toEqual({
       added: [{name: 'htfda', type: 'wwa'}],
       deleted: [{name: 'dasd', type: 'daegfasds'}],
     });
-
-  });
-
-  it('should ', function () {
-    const result = arrayDiff(['fdsfd'], ['fdasdsfa']);
   });
 });
