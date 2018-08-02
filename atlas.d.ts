@@ -28,8 +28,6 @@ declare namespace atlas {
 
     getCanvasContainer();
 
-    function;
-
     removeHtml(elementId: string);
 
 

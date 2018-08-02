@@ -1,4 +1,4 @@
-import {arrayDiff, Foo} from './arrayHelp';
+import {arrayDiff} from './arrayHelp';
 
 describe('arrayDiff', () => {
   it('should return null', function () {
@@ -25,34 +25,38 @@ describe('arrayDiff', () => {
     });
   });
 
-    it('should return empty deleted value and 1 added', function () {
-      const result = arrayDiff(['str'], ['string', 'str']);
+  it('should return empty deleted value and 1 added', function () {
+    const result = arrayDiff(['str'], ['string', 'str']);
 
-      expect(result).toEqual({
-        added: ['string'],
-        deleted: [],
-      });
-    });
-    it('should return 1 deleted object and 2 object added', function () {
-      const first: Foo[] = [{name: 'rom', type: 'das'}];
-      const scnd: Foo[] = [{name: 'Tas', type: 'vgas'}, {name: 'htfda', type: 'wwa'}];
-      const result = arrayDiff(first, scnd);
-
-      expect(result).toEqual({
-        added: [{name: 'Tas', type: 'vgas'}, {name: 'htfda', type: 'wwa'}],
-        deleted: [{name: 'rom', type: 'das'}],
-      });
-
-    });
-    it('should return 1 deleted object and 1 object added', function () {
-      const first: Foo[] = [{name: 'rom', type: 'das'}, {name: 'dasd', type: 'daegfasds'}]; // old
-      const scnd: Foo[] = [{name: 'rom', type: 'das'}, {name: 'htfda', type: 'wwa'}]; // new
-      const result = arrayDiff(first, scnd);
-
-      expect(result).toEqual({
-        added: [{name: 'htfda', type: 'wwa'}],
-        deleted: [{name: 'dasd', type: 'daegfasds'}],
-      });
-
+    expect(result).toEqual({
+      added: ['string'],
+      deleted: [],
     });
   });
+  it('should return 1 deleted object and 2 object added', function () {
+    const first: Foo[] = [{name: 'rom', type: 'das'}];
+    const scnd: Foo[] = [{name: 'Tas', type: 'vgas'}, {name: 'htfda', type: 'wwa'}];
+    const result = arrayDiff(first, scnd);
+
+    expect(result).toEqual({
+      added: [{name: 'Tas', type: 'vgas'}, {name: 'htfda', type: 'wwa'}],
+      deleted: [{name: 'rom', type: 'das'}],
+    });
+
+  });
+  it('should return 1 deleted object and 1 object added', function () {
+    const first: Foo[] = [{name: 'rom', type: 'das'}, {name: 'dasd', type: 'daegfasds'}]; // old
+    const scnd: Foo[] = [{name: 'rom', type: 'das'}, {name: 'htfda', type: 'wwa'}]; // new
+    const result = arrayDiff(first, scnd);
+
+    expect(result).toEqual({
+      added: [{name: 'htfda', type: 'wwa'}],
+      deleted: [{name: 'dasd', type: 'daegfasds'}],
+    });
+
+  });
+
+  it('should ', function () {
+    const result = arrayDiff(['fdsfd'], ['fdasdsfa']);
+  });
+});
