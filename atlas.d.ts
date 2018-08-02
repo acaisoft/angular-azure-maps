@@ -4,6 +4,8 @@ declare namespace atlas {
   import LineString = atlas.data.LineString;
 
   class Map {
+    htmlElements: any;
+
     constructor(container: string,
                 options: ServiceOptions & CameraOptions & StyleOptions & UserInteractionOptions)
 
@@ -14,9 +16,9 @@ declare namespace atlas {
     addEventListener(type: string, layer: string, callback: any);
     addEventListener(type: string, callback: any);
 
-
-    addLinestrings(line: LineString[],
+    addLinestrings(line: Array<Feature>,
                    options?: LinestringLayerOptions);
+
 
     addIcon(id: string, icon: HTMLImageElement);
 
@@ -25,6 +27,10 @@ declare namespace atlas {
     getCanvas();
 
     getCanvasContainer();
+
+    function;
+
+    removeHtml(elementId: string);
 
 
     removeLayers(layerNames: string[]);
@@ -64,7 +70,7 @@ declare namespace atlas {
     }
 
     class LineString {
-      coordinates: Position[]
+      coordinates: Position[];
       bbox: any;
 
       constructor(coordinates: Position[], bbox?: any)
@@ -78,6 +84,7 @@ declare namespace atlas {
       Point: G;
       properties?: P;
       id?: string;
+      geometry: any;
 
       constructor(Point: G, properties?: P, id?: string)
     }
