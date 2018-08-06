@@ -116,7 +116,7 @@ export class AtlasMapComponent implements OnInit, AfterContentInit {
     for (const item of features) {
       this.map.addPins([item.atlasFeature], item.pinConfig);
       if (item.atlasFeature.properties.cssClass) {
-        this.addItem(item.atlasFeature.properties.name, item.dataElement.localization, item.atlasFeature.properties.cssClass);
+        this.addItem(item.dataElement.id, item.dataElement.localization, item.atlasFeature.properties.cssClass);
         this.customPins.push(item.atlasFeature.properties.cssClass);
       }
       this.pointsArray.push(item.atlasFeature);
