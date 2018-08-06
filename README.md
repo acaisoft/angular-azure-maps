@@ -12,7 +12,6 @@ To wrap this module you can add in your template:
 ```html
 <am-map
   [initialConfig]="config"
-  [features]="amFeatures"
   [_id]='id'>  // For multiple maps
   </am-map>
 ```
@@ -32,6 +31,11 @@ public config = {
 Other config options: [Style Options] | [User Interaction Options] | [Service Options] | [Camera Options]
 <br>
 
+To add items you must use <br>
+`@ViewChild('maper') maper: AtlasMapComponent;`
+<br> and change features like this: <br>
+`this.maper.features = this.amFeatures;`
+<br>
 Your data element should by AmFeatures type:
 
 ```ts

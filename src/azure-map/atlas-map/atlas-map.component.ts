@@ -19,8 +19,7 @@ import {AtlasPopupDirective} from '../directives/atlas-popup.directive';
   templateUrl: './atlas-map.component.html',
   styleUrls: ['./atlas-map.component.css']
 })
-export class AtlasMapComponent implements OnInit, AfterContentInit, OnChanges {
-  @Input() features: AmFeature[] = [];
+export class AtlasMapComponent implements OnInit, AfterContentInit {
   @Input() initialConfig: any;
   @Input() _id: string;
 
@@ -37,6 +36,12 @@ export class AtlasMapComponent implements OnInit, AfterContentInit, OnChanges {
 
   private customPins: Array<any> = [];
 
+  private features: AmFeature[] = []; // Array of ours points to add on map
+
+  private pointsArray: atlas.data.Feature[] = [];
+
+  private cssArray: string[] = [];
+
   constructor() {
   }
 
@@ -45,14 +50,8 @@ export class AtlasMapComponent implements OnInit, AfterContentInit, OnChanges {
   }
 
   ngAfterContentInit(): void {
-    this.createPoints(); // Create points on map
+    this.createPoints(this.features); // Create points on map
     this.startMapClickListener(); // Click log position
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes && changes.features.firstChange === false) {
-      this.updatePoints(changes);
-    }
   }
 
   createMap(): void {
@@ -108,18 +107,19 @@ export class AtlasMapComponent implements OnInit, AfterContentInit, OnChanges {
     this.map.addHtml(customHTML, pos);
   }
 
-  createPoints(): void {
-    if (this.features.length === 0) {
+  createPoints(features: AmFeature[]): void {
+    if (features.length === 0) {
       console.log('No data available');
       return;
     }
 
-    for (const item of this.features) {
+    for (const item of features) {
       this.map.addPins([item.atlasFeature], item.pinConfig);
       if (item.atlasFeature.properties.cssClass) {
         this.addItem(item.atlasFeature.properties.name, item.dataElement.localization, item.atlasFeature.properties.cssClass);
         this.customPins.push(item.atlasFeature.properties.cssClass);
       }
+      this.pointsArray.push(item.atlasFeature);
     }
     this.createPopups();
   }
@@ -145,27 +145,24 @@ export class AtlasMapComponent implements OnInit, AfterContentInit, OnChanges {
     }
   }
 
-  updatePoints(changes: SimpleChanges): void {
-    if (changes.features.currentValue !== changes.features.previousValue) {
-
+  updatePoints(features: AmFeature[]): void {
       this.map.removeLayers(this.findUniqueLayers());
 
-      if (this.customPins) {
-        for (const item of changes.features.previousValue) {
-          for (const cst of this.customPins) {
-
-            const name = cst + item.atlasFeature.properties.name;
-            if (document.getElementById(name)) {
-              document.getElementById(name).remove();
+      if (this.cssArray.length) {
+        this.cssArray.forEach(value => {
+          const str = '#' + value;
+          console.log(str);
+          if (document.querySelectorAll(str)) {
+            const elm = document.querySelectorAll(str);
+            for (let i = 0; i < elm.length; i++) {
+              elm[i].parentNode.removeChild(elm[i]);
             }
           }
-        }
+        });
+        this.cssArray = [];
       }
-      this.createPoints();
+      this.createPoints(features);
     }
-  }
-
-
 }
 
 
