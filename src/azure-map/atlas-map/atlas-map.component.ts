@@ -151,7 +151,7 @@ export class AtlasMapComponent implements OnInit, AfterContentInit {
 
       if (this.cssArray.length) {
         this.cssArray.forEach(value => {
-          (document.querySelectorAll(`#${value}`) as Array<HTMLElement>).forEach(it => it.remove());
+          (document.querySelectorAll(`#${value}`) as any).forEach(it => it.remove());
         });
         this.cssArray = [];
       }
