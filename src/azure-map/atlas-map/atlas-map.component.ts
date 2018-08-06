@@ -36,7 +36,7 @@ export class AtlasMapComponent implements OnInit, AfterContentInit {
 
   private customPins: Array<any> = [];
 
-  public features: AmFeature[] = []; // Array of ours points to add on map
+  private features: AmFeature[] = []; // Array of ours points to add on map
 
   private pointsArray: atlas.data.Feature[] = [];
 
