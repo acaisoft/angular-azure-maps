@@ -36,7 +36,7 @@ export class AtlasMapComponent implements OnInit, AfterContentInit {
 
   private customPins: Array<any> = [];
 
-  private features: AmFeature[] = []; // Array of ours points to add on map
+  public features: AmFeature[] = []; // Array of ours points to add on map
 
   private pointsArray: atlas.data.Feature[] = [];
 
@@ -99,6 +99,7 @@ export class AtlasMapComponent implements OnInit, AfterContentInit {
     let customHTML;
     const idItem = clas + id;
     const pos = new atlas.data.Position(loc.lnt, loc.lng);
+    this.cssArray.push(idItem);
 
     customHTML = document.createElement('div');
     customHTML.setAttribute('id', idItem);
@@ -150,14 +151,7 @@ export class AtlasMapComponent implements OnInit, AfterContentInit {
 
       if (this.cssArray.length) {
         this.cssArray.forEach(value => {
-          const str = '#' + value;
-          console.log(str);
-          if (document.querySelectorAll(str)) {
-            const elm = document.querySelectorAll(str);
-            for (let i = 0; i < elm.length; i++) {
-              elm[i].parentNode.removeChild(elm[i]);
-            }
-          }
+          (document.querySelectorAll(`#${value}`) as Array<HTMLElement>).forEach(it => it.remove());
         });
         this.cssArray = [];
       }
