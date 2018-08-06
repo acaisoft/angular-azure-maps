@@ -33,8 +33,8 @@ Other config options: [Style Options] | [User Interaction Options] | [Service Op
 
 To add items you must use <br>
 `@ViewChild('maper') maper: AtlasMapComponent;`
-<br> and change features like this: <br>
-`this.maper.features = this.amFeatures;`
+<br>  and <br>
+`this.maper.updatePoints(features)`
 <br>
 Your data element should by AmFeatures type:
 
