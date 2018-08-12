@@ -12,7 +12,7 @@ To wrap this module you can add in your template:
 ```html
 <am-map
   [initialConfig]="config"
-  [features]="amFeatures">
+  [_id]='id'>  // For multiple maps
   </am-map>
 ```
 First input is your config to create map. Look 
@@ -31,6 +31,11 @@ public config = {
 Other config options: [Style Options] | [User Interaction Options] | [Service Options] | [Camera Options]
 <br>
 
+To add items you must use <br>
+`@ViewChild('maper') maper: AtlasMapComponent;`
+<br>  and <br>
+`this.maper.updatePoints(features)`
+<br>
 Your data element should by AmFeatures type:
 
 ```ts
@@ -43,6 +48,7 @@ interface AmFeature {
 ```
 <br>
 
+
 In your parent component you must create your data.
 <br>
 First create your map feature - [Feature]
@@ -53,9 +59,10 @@ Example for simple Point:
     const point = new atlas.data.Point(pos);
     const feature = new atlas.data.Feature(point, {
       name: data.name,
-      icon: 'pin-blue',
+      icon: 'none',
       type: data.type,
-      title: data.name
+      title: data.name,
+      cssClass: cssName //if you want custom pins !!Remeber to set icon: 'nope',
     });
     return feature;
   }
@@ -90,7 +97,6 @@ mergeDataPoint(data) {
     }as AmFeature;
   }
 ```
-
 
 ## Components
 Our AtlasMapComponent will create your map canvas, and add your Map Elements to map through added pins on it.<br>
