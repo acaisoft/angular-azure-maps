@@ -13,6 +13,7 @@ import {
 } from '@angular/core';
 import {AmFeature} from '../interfaces/am-feature';
 import {AtlasPopupDirective} from '../directives/atlas-popup.directive';
+import {azureMapLazyLoader} from '../utils/azure-map-lazy-loader';
 
 @Component({
   selector: 'am-map',
@@ -30,7 +31,7 @@ export class AtlasMapComponent implements OnInit, AfterContentInit {
   @ContentChild(AtlasPopupDirective, {read: TemplateRef}) popupTemplate: TemplateRef<any>;
 
   private popupView: EmbeddedViewRef<any>;
-  private popupAtlas: atlas.Popup = new atlas.Popup();
+  private popupAtlas: atlas.Popup;
 
   public map: atlas.Map;
 
@@ -42,16 +43,24 @@ export class AtlasMapComponent implements OnInit, AfterContentInit {
 
   private cssArray: string[] = [];
 
+  private mapPromise: Promise<any>;
+  public mapLoaded = false;
+
   constructor() {
+
   }
 
   ngOnInit(): void {
-    this.createMap();
+    this.mapPromise = azureMapLazyLoader().then(() => {
+      this.mapLoaded = true;
+      this.popupAtlas = new atlas.Popup();
+      this.createMap(); // Create map
+      this.createPoints(this.features); // Create points on map
+      this.startMapClickListener(); // Click log position
+    });
   }
 
   ngAfterContentInit(): void {
-    this.createPoints(this.features); // Create points on map
-    this.startMapClickListener(); // Click log position
   }
 
   createMap(): void {
@@ -86,6 +95,7 @@ export class AtlasMapComponent implements OnInit, AfterContentInit {
       this.onMapClick.emit(e.position);
       // On click you emit geo position
     });
+    console.log('EVENT');
   }
 
   createComponent(context: any): void {
@@ -147,16 +157,16 @@ export class AtlasMapComponent implements OnInit, AfterContentInit {
   }
 
   updatePoints(features: AmFeature[]): void {
-      this.map.removeLayers(this.findUniqueLayers());
+    this.map.removeLayers(this.findUniqueLayers());
 
-      if (this.cssArray.length) {
-        this.cssArray.forEach(value => {
-          (document.querySelectorAll(`#${value}`) as any).forEach(it => it.remove());
-        });
-        this.cssArray = [];
-      }
-      this.createPoints(features);
+    if (this.cssArray.length) {
+      this.cssArray.forEach(value => {
+        (document.querySelectorAll(`#${value}`) as any).forEach(it => it.remove());
+      });
+      this.cssArray = [];
     }
+    this.createPoints(features);
+  }
 }
 
 

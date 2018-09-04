@@ -1,7 +1,12 @@
+import Geometry = atlas.data.Geometry;
+import BoundingBox = atlas.data.BoundingBox;
+
 declare namespace atlas {
   import Feature = atlas.data.Feature;
   import Point = atlas.data.Point;
   import LineString = atlas.data.LineString;
+  import Polygon = atlas.data.Polygon;
+  import MultiPolygon = atlas.data.MultiPolygon;
 
   class Map {
     htmlElements: any;
@@ -24,18 +29,48 @@ declare namespace atlas {
 
     addHtml(element: HTMLElement, position: atlas.data.Position);
 
-    getCanvas();
+    addPolygons(polygons: Array<any>, options?: PolygonLayerOptions)
+
+    addRaster(tileSources: string[], options?: RasterLayerOptions);
+
+    getCamera(); // Returns the camera's current properties.
+
+    getCanvas(); // Returns the HTMLCanvasElement that the map is drawn to.
 
     getCanvasContainer();
 
-    removeHtml(elementId: string);
+    getLayers(); // Returns a list of the map's layers from bottom to top.
 
+    getMapContainer(); // Returns the HTMLElement that contains the map.
 
-    removeLayers(layerNames: string[]);
+    getServiceOptions(); // Returns the service options with which the map control was initialized.
+
+    getStyle(); // Returns the map control's current style settings.
+
+    getTraffic(); // Return the map control's current traffic settings.
+
+    getUserInteraction() // Return the map control's current user interaction handler settings.
+
+    remove(); // Clean up the map's resources. Map will not function correctly after calling this method.
+
+    removeHtml(elementId: string); // Removes a custom HTMLElement from the map.
+
+    removeEventListener(type: string, callback: any); // Remove an event listener from the map.
+
+    removeEventListener(type: string, layer: string, callback: any); // Remove an event listener from a layer of the map.
+
+    removeLayers(layerNames: string[]); // Removes a collection of layers from the map.
+
+    resize(); // Resize the map according to the dimensions of its container element.
 
     setCamera(options?: CameraOptions & AnimationOptions);
 
+    setCameraBounds(options?: CameraBoundsOptions) // Set the camera bounds of the map control.
+
     setStyle(options?: StyleOptions);
+
+    setTraffic(options?: TrafficOptions) // Set the traffic options for the map. Any options not specified will default to their current values.
+
 
     setUserInteraction(options?: UserInteractionOptions);
   }
@@ -69,9 +104,16 @@ declare namespace atlas {
 
     class LineString {
       coordinates: Position[];
-      bbox: any;
+      bbox: BoundingBox;
 
-      constructor(coordinates: Position[], bbox?: any)
+      constructor(coordinates: Position[], bbox?: BoundingBox)
+    }
+
+    class MultiLineString {
+      coordinates: Position[][];
+      bbox?: BoundingBox;
+
+      constructor(coordinates: Position[][], bbox?: BoundingBox);
     }
 
 
@@ -85,6 +127,40 @@ declare namespace atlas {
       geometry: any;
 
       constructor(Point: G, properties?: P, id?: string)
+    }
+
+    class BoundingBox {  // An array that defines a shape whose edges follow lines of constant longitude,
+      // latitude, and elevation. Array should contain 4 elements. [minLon, minLat, maxLon, maxLat]
+      southwestPosition: Position;
+      northeastPosition: Position;
+
+      constructor(southwestPosition: Position, northeastPosition: Position);
+    }
+
+    class Polygon {
+      coordinates: Position[][];
+      bbox: BoundingBox;
+
+      constructor(coordinates: Position[][], bbox?: BoundingBox)
+    }
+
+    class MultiPolygon {
+      coordinates: Position[][][];
+      bbox: BoundingBox;
+
+      constructor(coordinates: Position[][][], bbox?: BoundingBox)
+    }
+
+    class MultiPoint {
+      coordinates: Position[];
+      bbox: BoundingBox;
+
+      constructor(coordinates: Position[], bbox?: BoundingBox)
+    }
+
+    class Geometry {
+      type: 'Point' | 'LineString' | 'MultiPoint' | 'Polygon' | 'MultiLineString' | 'MultiPolygon' | 'GeometryCollection' | string;
+      TYPE: string;
     }
   }
 }
@@ -169,3 +245,29 @@ declare interface PopupOptions {
   pixelOffset?: number[]; // default: [0, 0]
   position?: atlas.data.Position; // default: new Position(0, 0)
 }
+
+declare interface PolygonProperties {
+  color?: string; // The fill color of the polygons for the layer. Is used as the default if a fill color is not specified for a polygon.
+  outlineColor?: string; // The outline color of the polygons for the layer. Is used as the default if an outline color is not specified for a polygon.
+}
+
+declare interface PolygonLayerOptions {
+  color?: string; // The fill color of the polygons for the layer. Is used as the default if a fill color is not specified for a polygon.
+  name?: string;
+  outlineColor?: string; // The outline color of the polygons for the layer. Is used as the default if an outline color is not specified for a polygon.
+}
+
+declare interface RasterLayerOptions {
+  name?: string;
+}
+
+declare interface CameraBoundsOptions {
+  bounds?: BoundingBox; // The bounds of the map control's camera.
+  padding?: number | number[]; // Padding in pixels for the given bounds. Either specify a number for the padding of all sides of the map or specify each side as an array of [top, right, bottom, left].
+}
+
+declare interface TrafficOptions {
+  flow?: 'none' | 'relative' | 'absolute' | 'relative-delay'; // The type of traffic flow to display
+  incidents?: boolean; // Whether to display incidents on the map.
+}
+

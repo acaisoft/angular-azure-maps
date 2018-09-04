@@ -1,4 +1,4 @@
-import {arrayDiff} from './arrayHelp';
+import {arrayDiff, diff} from './arrayHelp';
 
 describe('arrayDiff', () => {
   it('should return two empty array', function () {
@@ -43,6 +43,28 @@ describe('arrayDiff', () => {
     expect(result).toEqual({
       added: [{name: 'Tas', type: 'vgas'}, {name: 'htfda', type: 'wwa'}],
       deleted: [{name: 'rom', type: 'das'}],
+    });
+
+  });
+  it('should return 0 deleted object and 0 object added, object are equals', function () {
+    const first = [{name: 'Tas', type: 'vgas'}, {name: 'htfda', type: 'wwa'}];
+    const scnd = [{name: 'Tas', type: 'vgas'}, {name: 'htfda', type: 'wwa'}];
+    const result = arrayDiff(first, scnd);
+
+    expect(result).toEqual({
+      added: [],
+      deleted: []
+    });
+
+  });
+  it('should return 0 deleted object and 0 object added, Objects are equals, but mixed', function () {
+    const first = [{name: 'asdas', type: 'aasd'}, {name: 'htfda', type: 'wwa'}];
+    const scnd = [{name: 'sadasd', type: 'wwa'}, {name: 'Tas', type: 'vgas'}];
+    const result = diff(first, scnd);
+
+    expect(result).toEqual({
+      added: [],
+      deleted: []
     });
 
   });
