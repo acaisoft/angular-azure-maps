@@ -22,7 +22,7 @@ import {azureMapLazyLoader} from '../utils/azure-map-lazy-loader';
 })
 export class AtlasMapComponent implements OnInit, AfterContentInit {
   @Input() initialConfig: any;
-  @Input() _id: string = 'das';
+  @Input() _id: string;
 
   @Output() onMapClick = new EventEmitter<atlas.data.Position>();
 
