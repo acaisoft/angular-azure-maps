@@ -8,7 +8,6 @@ import {BrowserModule} from '@angular/platform-browser';
 @NgModule({
   imports: [
     CommonModule,
-    BrowserModule
   ],
   providers: [LoadMapService],
   declarations: [AtlasMapComponent, AtlasPopupDirective],
