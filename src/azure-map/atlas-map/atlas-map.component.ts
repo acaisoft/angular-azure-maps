@@ -5,7 +5,7 @@ import {
   Component,
   ContentChild, ElementRef, EmbeddedViewRef, EventEmitter,
   Input,
-  OnChanges,
+  OnChanges, OnDestroy,
   OnInit, Output, SimpleChanges,
   TemplateRef,
   ViewChild,
@@ -14,6 +14,7 @@ import {
 import {AmFeature} from '../interfaces/am-feature';
 import {AtlasPopupDirective} from '../directives/atlas-popup.directive';
 import {azureMapLazyLoader} from '../utils/azure-map-lazy-loader';
+import {LoadMapService} from '../utils/load-map.service';
 
 @Component({
   selector: 'am-map',
@@ -22,7 +23,7 @@ import {azureMapLazyLoader} from '../utils/azure-map-lazy-loader';
 })
 export class AtlasMapComponent implements OnInit, AfterContentInit {
   @Input() initialConfig: any;
-  @Input() _id: string;
+  @Input() _id: string = 'dsa';
 
   @Output() onMapClick = new EventEmitter<atlas.data.Position>();
 
@@ -46,18 +47,16 @@ export class AtlasMapComponent implements OnInit, AfterContentInit {
   private mapPromise: Promise<any>;
   public mapLoaded = false;
 
-  constructor() {
+  constructor(private mapService: LoadMapService) {
 
   }
 
   ngOnInit(): void {
-    this.mapPromise = azureMapLazyLoader().then(() => {
-      this.mapLoaded = true;
-      this.popupAtlas = new atlas.Popup();
-      this.createMap(); // Create map
-      this.createPoints(this.features); // Create points on map
-      this.startMapClickListener(); // Click log position
-    });
+        this.createMap()
+        this.popupAtlas = new atlas.Popup();
+        this.mapLoaded = true;
+        this.createPoints(this.features);
+        this.startMapClickListener();
   }
 
   ngAfterContentInit(): void {
@@ -66,7 +65,7 @@ export class AtlasMapComponent implements OnInit, AfterContentInit {
   createMap(): void {
     try {
       this.mapWrapper.nativeElement.setAttribute('id', this._id);
-      this.map = new atlas.Map(this._id, this.initialConfig);
+      this.map = new atlas.Map(this._id, {'subscription-key': 'tTk1JVEaeNvDkxxnxHm9cYaCvqlOq1u-fXTvyXn2XkA'});
     } catch (e) {
       console.log('ADD YOUR CONFIG!', e);
     }
@@ -92,6 +91,7 @@ export class AtlasMapComponent implements OnInit, AfterContentInit {
 
   startMapClickListener(): void {
     this.map.addEventListener('click', (e) => {
+      console.log(e.position)
       this.onMapClick.emit(e.position);
       // On click you emit geo position
     });
@@ -167,6 +167,7 @@ export class AtlasMapComponent implements OnInit, AfterContentInit {
     }
     this.createPoints(features);
   }
+
 }
 
 
