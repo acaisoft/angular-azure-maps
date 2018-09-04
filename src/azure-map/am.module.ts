@@ -5,7 +5,7 @@ import { AtlasPopupDirective } from './directives/atlas-popup.directive';
 
 @NgModule({
   imports: [
-    CommonModule
+    CommonModule,
   ],
   providers: [],
   declarations: [AtlasMapComponent, AtlasPopupDirective],
