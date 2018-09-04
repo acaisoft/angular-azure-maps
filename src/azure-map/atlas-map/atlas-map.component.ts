@@ -23,7 +23,7 @@ import {LoadMapService} from '../utils/load-map.service';
 })
 export class AtlasMapComponent implements OnInit, AfterContentInit {
   @Input() initialConfig: any;
-  @Input() _id: string = 'dsa';
+  @Input() _id: string;
 
   @Output() onMapClick = new EventEmitter<atlas.data.Position>();
 
@@ -65,7 +65,7 @@ export class AtlasMapComponent implements OnInit, AfterContentInit {
   createMap(): void {
     try {
       this.mapWrapper.nativeElement.setAttribute('id', this._id);
-      this.map = new atlas.Map(this._id, {'subscription-key': 'tTk1JVEaeNvDkxxnxHm9cYaCvqlOq1u-fXTvyXn2XkA'});
+      this.map = new atlas.Map(this._id, this.initialConfig);
     } catch (e) {
       console.log('ADD YOUR CONFIG!', e);
     }
