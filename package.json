@@ -1,6 +1,6 @@
 {
   "name": "@acaisoft/angular-azure-maps",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "Azure Maps Angular wrapper",
   "main": "index.js",
   "repository": {
