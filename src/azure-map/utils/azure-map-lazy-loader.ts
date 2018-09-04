@@ -1,4 +1,9 @@
-const sources = [
+interface Source {
+  type: AssetType;
+  src: string;
+}
+
+const sources: Source[] = [
     {
         type: 'style',
         src: 'https://atlas.microsoft.com/sdk/css/atlas.min.css?api-version=1.1'
@@ -13,7 +18,7 @@ export function _window(): any {
     return window;
 }
 
-type AssetType = 'script' | 'style';
+export type AssetType = 'script' | 'style';
 
 export function loadSingleAsset(source: string, type: AssetType) {
     return new Promise((resolve, reject) => {
