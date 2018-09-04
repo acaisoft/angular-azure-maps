@@ -13,7 +13,9 @@ export function _window(): any {
     return window;
 }
 
-export function loadSingleAsset(source: string, type: string) {
+type AssetType = 'script' | 'style';
+
+export function loadSingleAsset(source: string, type: AssetType) {
     return new Promise((resolve, reject) => {
         let createdElement;
         switch (type) {
