@@ -8,6 +8,28 @@ First add this two line to your index.html:
   <link rel="stylesheet" href="https://atlas.microsoft.com/sdk/css/atlas.min.css?api-version=1.0" type="text/css" />
   <script src="https://atlas.microsoft.com/sdk/js/atlas.min.js?api-version=1.0"></script>
 ````
+Or use our lazy loading
+#### Lazy loading
+```ts
+// in component constructor:
+constructor(private mapService: LoadMapService) {}
+// and use load() method for expample in ngOnInit
+
+this.mapService.load().subscribe((value) => {
+  console.log('MAP WAS LOADED')
+})
+```
+<br>
+
+This `mapService` own `isLoaded` properties so you can simple use it to know when map was loaded in temaple
+```html
+<div *ngIf="mapService.isLoaded">
+  <am-map
+    [initialConfig]="config"
+  </am-map>
+ </div>
+```
+
 To wrap this module you can add in your template:
 ```html
 <am-map

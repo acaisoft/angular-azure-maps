@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import {ModuleWithProviders, NgModule} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AtlasMapComponent } from './atlas-map/atlas-map.component';
 import { AtlasPopupDirective } from './directives/atlas-popup.directive';
@@ -9,7 +9,6 @@ import {BrowserModule} from '@angular/platform-browser';
   imports: [
     CommonModule,
   ],
-  providers: [LoadMapService],
   declarations: [AtlasMapComponent, AtlasPopupDirective],
   exports: [
     AtlasMapComponent,
@@ -18,4 +17,13 @@ import {BrowserModule} from '@angular/platform-browser';
   bootstrap: [AtlasMapComponent]
 })
 export class AmModule {
+  public static forRoot(): ModuleWithProviders {
+
+    return {
+      ngModule: AmModule,
+      providers: [
+        LoadMapService
+      ]
+    };
+  }
 }

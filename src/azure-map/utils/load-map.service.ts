@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {azureMapLazyLoader} from './azure-map-lazy-loader';
 import {fromPromise} from 'rxjs/observable/fromPromise';
 import {Subject} from 'rxjs';
-import { Observable } from "rxjs/Observable";
+import {Observable} from 'rxjs/Observable';
 
 @Injectable()
 export class LoadMapService {
@@ -16,13 +16,18 @@ export class LoadMapService {
   constructor() {
   }
 
-  load() {
+  load(): Observable<boolean> {
     if (!this.isLoaded) {
-      this.mapPromise = azureMapLazyLoader().then(() => {
+      return fromPromise(azureMapLazyLoader().then(() => {
         this.isLoaded = true;
-        this.loadedSubject.next(true);
-      })
-      return fromPromise(this.mapPromise);
+        return this.isLoaded;
+      }));
+    } else {
+      return Observable.of(true);
     }
+  }
+
+  observableMap() {
+    return this.loadedSubject.asObservable();
   }
 }
