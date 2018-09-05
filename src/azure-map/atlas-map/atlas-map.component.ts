@@ -44,7 +44,6 @@ export class AtlasMapComponent implements OnInit, AfterContentInit {
 
   private cssArray: string[] = [];
 
-  private mapPromise: Promise<any>;
   public mapLoaded = false;
 
   constructor(private mapService: LoadMapService) {
@@ -52,11 +51,11 @@ export class AtlasMapComponent implements OnInit, AfterContentInit {
   }
 
   ngOnInit(): void {
-        this.createMap()
-        this.popupAtlas = new atlas.Popup();
-        this.mapLoaded = true;
-        this.createPoints(this.features);
-        this.startMapClickListener();
+    this.createMap();
+    this.popupAtlas = new atlas.Popup();
+    this.mapLoaded = true;
+    this.createPoints(this.features);
+    this.startMapClickListener();
   }
 
   ngAfterContentInit(): void {
@@ -91,7 +90,6 @@ export class AtlasMapComponent implements OnInit, AfterContentInit {
 
   startMapClickListener(): void {
     this.map.addEventListener('click', (e) => {
-      console.log(e.position)
       this.onMapClick.emit(e.position);
       // On click you emit geo position
     });
@@ -167,7 +165,6 @@ export class AtlasMapComponent implements OnInit, AfterContentInit {
     }
     this.createPoints(features);
   }
-
 }
 
 
