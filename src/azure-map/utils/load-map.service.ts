@@ -1,8 +1,7 @@
 import {Injectable} from '@angular/core';
 import {azureMapLazyLoader} from './azure-map-lazy-loader';
-import {fromPromise} from 'rxjs/observable/fromPromise';
-import {Subject} from 'rxjs';
-import {Observable} from 'rxjs/Observable';
+import {Observable, of, Subject} from 'rxjs';
+import {fromPromise} from 'rxjs/internal-compatibility';
 
 @Injectable()
 export class LoadMapService {
@@ -23,7 +22,7 @@ export class LoadMapService {
         return this.isLoaded;
       }));
     } else {
-      return Observable.of(true);
+      return of(true);
     }
   }
 
