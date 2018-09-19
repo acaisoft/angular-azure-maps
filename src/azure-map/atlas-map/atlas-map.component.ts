@@ -35,34 +35,15 @@ export class AtlasMapComponent implements OnInit, AfterContentInit {
   public popupAtlas: atlas.Popup;
 
   public map: atlas.Map;
-
   private customPins: Array<any> = [];
-
   public features: AmFeature[] = []; // Array of ours points to add on map
-
   private pointsArray: atlas.data.Feature[] = [];
-
   private cssArray: string[] = [];
 
-
-  constructor(private mapService: LoadMapService) {
-
-    // this.createMap();
-
-  }
+  constructor() {}
 
   ngOnInit(): void {
-
-
-    // this.createMap(this._id, this.initialConfig);
-
-    // this.createPoints(this.features);
-    // this.startMapClickListener();
-    // this.createMap();
     this.popupAtlas = new atlas.Popup();
-    // this.mapLoaded = true;
-    // this.createPoints(this.features);
-    // this.startMapClickListener();
   }
 
   ngAfterContentInit(): void {
@@ -101,7 +82,6 @@ export class AtlasMapComponent implements OnInit, AfterContentInit {
       console.log('MAP:', this.map);
       // On click you emit geo position
     });
-    console.log('EVENT');
   }
 
   createComponent(context: any): void {
@@ -144,15 +124,12 @@ export class AtlasMapComponent implements OnInit, AfterContentInit {
 
   createPopups(features: AmFeature[]): void {
     for (const item of this.findUniqueLayers(features)) {
-
       if (this.popupTemplate) {
         this.map.addEventListener('mouseover', item, (e) => {
           const amFeature = features.find(it => it.dataElement.name === e.features[0].properties.name);
-
           this.createComponent({
             dataElement: amFeature.dataElement
           });
-
           this.popupAtlas.setPopupOptions({
             position: e.features[0].geometry.coordinates,
             content: document.getElementById(`popupWrapper`),
@@ -165,7 +142,6 @@ export class AtlasMapComponent implements OnInit, AfterContentInit {
 
   updatePoints(features: AmFeature[]): void {
     this.map.removeLayers(this.findUniqueLayers(features));
-
     if (this.cssArray.length) {
       this.cssArray.forEach(value => {
         (document.querySelectorAll(`#${value}`) as any).forEach(it => it.remove());

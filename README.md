@@ -1,5 +1,5 @@
 # Angular Azure Maps
-Angular Azure Maps is a wrapped MS Azure Map on Angular
+Angular 6 Azure Maps is a wrapped MS Azure Map on Angular
 
 ## How to use
 [AzureMapDocumentation]<br>
@@ -11,13 +11,15 @@ First add this two line to your index.html:
 Or use our lazy loading
 #### Lazy loading
 ```ts
-// in component constructor:
+// in component:
 constructor(private mapService: LoadMapService) {}
 // and use load() method for expample in ngOnInit
 
-this.mapService.load().subscribe((value) => {
+ngOnInit() {
+this.mapService.load().subscribe(() => {
   console.log('MAP WAS LOADED')
 })
+}
 ```
 <br>
 
@@ -32,10 +34,9 @@ This `mapService` own `isLoaded` properties so you can simple use it to know whe
 
 To wrap this module you can add in your template:
 ```html
-<am-map
-  [initialConfig]="config"
-  [_id]='id'>  // For multiple maps
-  </am-map>
+ <am-map #maper 
+ (onMapClick)="getPos($event)" // Output emiting position
+ >
 ```
 First input is your config to create map. Look 
 [Map Init].
@@ -56,7 +57,17 @@ Other config options: [Style Options] | [User Interaction Options] | [Service Op
 To add items you must use <br>
 `@ViewChild('maper') maper: AtlasMapComponent;`
 <br>  and <br>
-`this.maper.updatePoints(features)`
+*INIT MAP:*
+```ts 
+this.maper.createMap(id, config) // Init map
+this.maper.startMapClickListener();  // If you want emit position from map (necessary if you have output(onMapClick)
+```
+
+*Add points to map*
+`this.maper.createPoints(features: AmFeatures)`
+<br>
+*Refresh points*
+`this.maper.updatePoints(features: AmFeatures)`
 <br>
 Your data element should by AmFeatures type:
 
