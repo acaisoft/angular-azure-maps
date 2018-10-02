@@ -1,6 +1,7 @@
 export interface AmFeature {
-  dataElement: any; // Data element
-  atlasFeature: atlas.data.Feature; // Map's features
-  layer: string; // Layer for different object
+  dataElement: any; // Data element, your raw data
+  atlasFeature: atlas.data.Feature; // Items to inject into map
+  layer: string; // Layer for different object for separate object
   pinConfig: PinLayerOptions;
+  extras?: any;
 }

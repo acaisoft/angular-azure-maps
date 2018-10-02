@@ -8,6 +8,21 @@ declare namespace atlas {
   import Polygon = atlas.data.Polygon;
   import MultiPolygon = atlas.data.MultiPolygon;
 
+  function getLanguage();
+  function getSessionId();
+  function getSubscriptionKey();
+  function getUserRegion();
+  function getVersion();
+  function isSupported(e);
+  function setLanguage(e);
+  function setSessionId(e);
+  function setSubscriptionKey(e: string);
+  function setUserRegion(e);
+  function _hasSetSubscriptionKey();
+  function _hasSetSessionId();
+  function _hasSetLanguage();
+  function _hasSetUserRegion();
+
   class Map {
     htmlElements: any;
 

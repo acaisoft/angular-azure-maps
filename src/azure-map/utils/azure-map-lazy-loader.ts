@@ -6,11 +6,11 @@ interface Source {
 const sources: Source[] = [
     {
         type: 'style',
-        src: 'https://atlas.microsoft.com/sdk/css/atlas.min.css?api-version=1.1'
+        src: 'https://atlas.microsoft.com/sdk/css/atlas.min.css?api-version=1'
     },
     {
         type: 'script',
-        src: 'https://atlas.microsoft.com/sdk/js/atlas.min.js?api-version=1.1'
+        src: 'https://atlas.microsoft.com/sdk/js/atlas.min.js?api-version=1'
     }
 ];
 
