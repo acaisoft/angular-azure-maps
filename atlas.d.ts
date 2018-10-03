@@ -9,25 +9,58 @@ declare namespace atlas {
   import MultiPolygon = atlas.data.MultiPolygon;
 
   function getLanguage();
+
   function getSessionId();
+
   function getSubscriptionKey();
+
   function getUserRegion();
+
   function getVersion();
+
   function isSupported(e);
+
   function setLanguage(e);
+
   function setSessionId(e);
+
   function setSubscriptionKey(e: string);
+
   function setUserRegion(e);
+
   function _hasSetSubscriptionKey();
+
   function _hasSetSessionId();
+
   function _hasSetLanguage();
+
   function _hasSetUserRegion();
 
   class Map {
     htmlElements: any;
+    accessibleMapDelegate: any;
+    events: any;
+    imageSprite: any;
+    markers: any;
+    sources: any;
 
     constructor(container: string,
                 options: ServiceOptions & CameraOptions & StyleOptions & UserInteractionOptions)
+
+    addCircles(e, t);
+
+    addContror(e, t);
+
+    clear();
+
+    dispote();
+
+    pixelsToPositions(e);
+
+    positionsToPixels(e);
+
+    stop();
+
 
     addPins(pins: Feature[],
             options?: PinLayerOptions);
@@ -90,6 +123,52 @@ declare namespace atlas {
     setUserInteraction(options?: UserInteractionOptions);
   }
 
+  class HtmlMarker {
+    getOptions();
+
+    setOptions(t);
+
+    togglePopup();
+
+    _addToMapt(e);
+
+    _getId();
+
+    _removeFromMap();
+  }
+
+  class Shape {
+    addProperty(e, t);
+
+    getBounds();
+
+    getCoordinates();
+
+    getId();
+
+    getProperties();
+
+    getType();
+
+    isCircle();
+
+    setCoordinates(e);
+
+    setProperties(t);
+
+    toJson();
+
+    _getCoordinateDimensions(e);
+
+    _handleCircle();
+
+    _setDataSource(e);
+
+    _testCircle(e);
+
+    _toJson();
+  }
+
   class Popup {
     options?: PopupOptions;
 
@@ -100,6 +179,36 @@ declare namespace atlas {
     setPopupOptions(options?: PopupOptions);
 
 
+  }
+
+  namespace math {
+    function boundingBoxToPolygon(t);
+
+    function convertDistance(t, e, a, n);
+
+    function getCardinalSpline(t, e, a, n);
+
+    function getDestination(t, e, a, n);
+
+    function getDistanceTo(t, e, a);
+
+    function getEarthRadius(t);
+
+    function getGeodesicPath(t, e);
+
+    function getHeading(t, e);
+
+    function getLengthOfPath(t, e);
+
+    function getPositionAlongPath(t, e, a);
+
+    function getRegularPolygonPath(t, e, a, n, s);
+
+    function interpolate(t, e, a);
+
+    function normalizeLatitude(t);
+
+    function normalizeLongitude(t);
   }
 
   namespace data {
