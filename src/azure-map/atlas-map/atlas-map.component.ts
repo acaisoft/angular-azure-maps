@@ -1,6 +1,7 @@
 /// <reference path="../../../atlas"/>
 
 import {
+  AfterContentInit,
   AfterViewInit,
   Component,
   ContentChild,
@@ -23,12 +24,13 @@ import {LoadMapService} from '../utils/load-map.service';
   templateUrl: './atlas-map.component.html',
   styleUrls: ['./atlas-map.component.css']
 })
-export class AtlasMapComponent implements OnInit, AfterViewInit {
+export class AtlasMapComponent implements OnInit, AfterContentInit, AfterViewInit {
   @Input() initialConfig: any;
   @Input() _id: string;
 
 
   @Output() onMapClick = new EventEmitter<atlas.data.Position>();
+  @Output() loaded: EventEmitter<any> = new EventEmitter();
 
   @ViewChild('popupsContainer', {read: ViewContainerRef}) popupsContainer: ViewContainerRef;
   @ViewChild('mapWrapper', {read: ElementRef}) mapWrapper: ElementRef;
@@ -53,18 +55,32 @@ export class AtlasMapComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.popupAtlas = new atlas.Popup();
+    this.mapService.loadedComponenet.next(true);
+
+  }
+
+  ngAfterContentInit(): void {
+    this.createMap(this._id, this.initialConfig); // Initial map
+    this.startMapClickListener(); // Start emitter
   }
 
   ngAfterViewInit(): void {
-    this.mapService.loadedComponenet.next(true);
-    this.createMap(this._id, this.initialConfig); // Initial map
-    this.startMapClickListener(); // Start emitter
+    this.emitLoaded();
+  }
+
+  emitLoaded() {
+    if (this.map) {
+      this.loaded.emit();
+    } else {
+      setTimeout(this.emitLoaded, 100);
+    }
   }
 
   public createMap(id: string, config: any): void {
     try {
       this.mapWrapper.nativeElement.setAttribute('id', id);
       this.map = new atlas.Map(id, config); // Init map box
+      console.log('Map was created!', this.map);
     } catch (e) {
       console.log('CHECK YOUR CONFIG!', e);
     }
@@ -188,6 +204,8 @@ export class AtlasMapComponent implements OnInit, AfterViewInit {
   removeMap() {
     this.map.remove();
   }
+
+
 }
 
 

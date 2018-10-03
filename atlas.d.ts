@@ -43,6 +43,7 @@ declare namespace atlas {
     imageSprite: any;
     markers: any;
     sources: any;
+    layers: any;
 
     constructor(container: string,
                 options: ServiceOptions & CameraOptions & StyleOptions & UserInteractionOptions)
@@ -124,6 +125,8 @@ declare namespace atlas {
   }
 
   class HtmlMarker {
+
+    constructor(e?, f?)
     getOptions();
 
     setOptions(t);
@@ -138,6 +141,8 @@ declare namespace atlas {
   }
 
   class Shape {
+
+    constructor(t?, o?, r?);
     addProperty(e, t);
 
     getBounds();
@@ -209,6 +214,93 @@ declare namespace atlas {
     function normalizeLatitude(t);
 
     function normalizeLongitude(t);
+  }
+
+  namespace source {
+    type t = any;
+    type o = any;
+    type e = any;
+
+    class DataSource {
+      constructor(t?, o?);
+
+      add(e, t?);
+
+      clear();
+
+      constructor(t, o);
+
+      dispose();
+
+      getOptions();
+
+      getShapeById(e);
+
+      remove(e);
+
+      setOptions(e);
+
+      toJson();
+
+      _addNoUpdate(e, t);
+
+      _addToSources(e, t);
+
+      _buildSource();
+
+      _clearNoUpdate();
+
+      _removeFromSources(e);
+
+      _toJson();
+
+      _updateShapesMap(e);
+
+      _updateSource();
+    }
+
+    class Source {
+      constructor(e?)
+    }
+
+    class VectorTileSource {
+      constructor(e?, o?);
+    }
+  }
+
+  namespace layer {
+
+    type e = any;
+    type t = any;
+    type i = any;
+    type o = any;
+    type n = any;
+
+
+    class BubbleLayer {
+      constructor(e, o, i)
+    }
+
+    class Layer {
+      constructor(t);
+    }
+
+    class LineLayer {
+      constructor(i, o, e);
+    }
+
+    class PolygonLayer {
+      constructor(t, i, e);
+    }
+
+    class SymbolLayer {
+      constructor(o, i, n);
+    }
+
+    class TileLayer {
+      constructor(i, o);
+    }
+
   }
 
   namespace data {
