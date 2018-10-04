@@ -38,9 +38,10 @@ Or use our lazy loading
 ```
 <br>
 
-To add items you must use <br>
-`@ViewChild('maper') maper: AtlasMapComponent;`
-<br>  and <br>
+To have control on map you must use <br>
+```
+@ViewChild('maper') maper: AtlasMapComponent;
+```
 
 This `mapService` own `isLoaded` properties so you can simple use it to know when map was loaded in template
 ```html
@@ -74,8 +75,8 @@ Outputs:
  (loaded)="loadedMap()"
  >
 ```
-(onMapClick) - its emitting position on click 
-(loaded) - emitting when AmComponent is loaded, after its you can add data:
+(onMapClick) - its emitting position on click <br>
+(loaded) - emitting when AmComponent is loaded, after its you can for example add data:
 ```ts
 mapLoaded() {
     // Check if ViewChild is correctly init
@@ -107,6 +108,9 @@ mapLoaded() {
 *Refresh points*
 `this.maper.updatePoints(features: AmFeatures)`
 <br>
+*Remove Map*
+`this.maper.removeMap() or this.maper.map.remove() <br>
+
 Your data element should by AmFeatures type:
 
 ```ts
