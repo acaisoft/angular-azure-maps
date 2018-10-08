@@ -2,18 +2,21 @@
 
 import {
   AfterContentInit,
+  AfterViewInit,
   Component,
-  ContentChild, ElementRef, EmbeddedViewRef, EventEmitter,
+  ContentChild,
+  ElementRef,
+  EmbeddedViewRef,
+  EventEmitter,
   Input,
-  OnChanges, OnDestroy,
-  OnInit, Output, SimpleChanges,
+  OnInit,
+  Output,
   TemplateRef,
   ViewChild,
   ViewContainerRef,
 } from '@angular/core';
 import {AmFeature} from '../interfaces/am-feature';
 import {AtlasPopupDirective} from '../directives/atlas-popup.directive';
-import {azureMapLazyLoader} from '../utils/azure-map-lazy-loader';
 import {LoadMapService} from '../utils/load-map.service';
 
 @Component({
@@ -21,14 +24,21 @@ import {LoadMapService} from '../utils/load-map.service';
   templateUrl: './atlas-map.component.html',
   styleUrls: ['./atlas-map.component.css']
 })
-export class AtlasMapComponent implements OnInit, AfterContentInit {
-  public initialConfig: any;
-  public _id: string;
+export class AtlasMapComponent implements OnInit, AfterContentInit, AfterViewInit {
+  @Input() initialConfig: any;
+  @Input() _id: string;
+
 
   @Output() onMapClick = new EventEmitter<atlas.data.Position>();
+  @Output() loaded: EventEmitter<any> = new EventEmitter();
 
   @ViewChild('popupsContainer', {read: ViewContainerRef}) popupsContainer: ViewContainerRef;
   @ViewChild('mapWrapper', {read: ElementRef}) mapWrapper: ElementRef;
+
+  /**
+   * For create and control popup
+   * To Inject into ng-template in parent
+   */
   @ContentChild(AtlasPopupDirective, {read: TemplateRef}) popupTemplate: TemplateRef<any>;
 
   public popupView: EmbeddedViewRef<any>;
@@ -40,19 +50,37 @@ export class AtlasMapComponent implements OnInit, AfterContentInit {
   private pointsArray: atlas.data.Feature[] = [];
   private cssArray: string[] = [];
 
-  constructor() {}
+  constructor(private mapService: LoadMapService) {
+  }
 
   ngOnInit(): void {
     this.popupAtlas = new atlas.Popup();
+    this.mapService.loadedComponenet.next(true);
+
   }
 
   ngAfterContentInit(): void {
+    this.createMap(this._id, this.initialConfig); // Initial map
+    this.startMapClickListener(); // Start emitter
+  }
+
+  ngAfterViewInit(): void {
+    this.emitLoaded();
+  }
+
+  emitLoaded() {
+    if (this.map) {
+      this.loaded.emit();
+    } else {
+      setTimeout(this.emitLoaded, 100);
+    }
   }
 
   public createMap(id: string, config: any): void {
     try {
       this.mapWrapper.nativeElement.setAttribute('id', id);
       this.map = new atlas.Map(id, config); // Init map box
+      console.log('Map was created!', this.map);
     } catch (e) {
       console.log('CHECK YOUR CONFIG!', e);
     }
@@ -70,8 +98,12 @@ export class AtlasMapComponent implements OnInit, AfterContentInit {
     this.map.setUserInteraction(options);
   }
 
+  /**
+   * Founding all unique layers from features Array
+   * @param AmFeature[] features
+   * @returns string[]
+   */
   findUniqueLayers(features: AmFeature[]): string[] {
-    // Founding all unique layers from your data
     const allLayers = features.map(it => it.layer);
     return Array.from(new Set(allLayers));
   }
@@ -79,11 +111,14 @@ export class AtlasMapComponent implements OnInit, AfterContentInit {
   startMapClickListener(): void {
     this.map.addEventListener('click', (e) => {
       this.onMapClick.emit(e.position);
-      console.log('MAP:', this.map);
       // On click you emit geo position
     });
   }
 
+  /**
+   * Creating popUpContainer and injected to parent Template
+   * @param context
+   */
   createComponent(context: any): void {
     if (this.popupView) {
       this.popupView.destroy();
@@ -104,6 +139,11 @@ export class AtlasMapComponent implements OnInit, AfterContentInit {
     this.map.addHtml(customHTML, pos); // add to map
   }
 
+  /**
+   * Drawin point on the map as pins
+   * @Incjet createPopups()
+   * @param  features
+   */
   createPoints(features: AmFeature[]): void {
     if (features.length === 0) {
       console.log('No data available');
@@ -118,16 +158,25 @@ export class AtlasMapComponent implements OnInit, AfterContentInit {
       }
       this.pointsArray.push(item.atlasFeature);
     }
-    // this.createPopups();
+    this.createPopups(features);
   }
 
 
+  /**
+   * Created popUps for all features by type of layers
+   * Adding event on 'mouseover'
+   * @param features
+   */
   createPopups(features: AmFeature[]): void {
     for (const item of this.findUniqueLayers(features)) {
       if (this.popupTemplate) {
         this.map.addEventListener('mouseover', item, (e) => {
-          const amFeature = features.find(it => it.dataElement.name === e.features[0].properties.name);
+          const amFeature: AmFeature = features.find(it => it.dataElement.name === e.features[0].properties.name);
           this.createComponent({
+            /**
+             * sent to template variable
+             * raw data from input
+             */
             dataElement: amFeature.dataElement
           });
           this.popupAtlas.setPopupOptions({
@@ -155,6 +204,8 @@ export class AtlasMapComponent implements OnInit, AfterContentInit {
   removeMap() {
     this.map.remove();
   }
+
+
 }
 
 

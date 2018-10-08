@@ -8,11 +8,60 @@ declare namespace atlas {
   import Polygon = atlas.data.Polygon;
   import MultiPolygon = atlas.data.MultiPolygon;
 
+  function getLanguage();
+
+  function getSessionId();
+
+  function getSubscriptionKey();
+
+  function getUserRegion();
+
+  function getVersion();
+
+  function isSupported(e);
+
+  function setLanguage(e);
+
+  function setSessionId(e);
+
+  function setSubscriptionKey(e: string);
+
+  function setUserRegion(e);
+
+  function _hasSetSubscriptionKey();
+
+  function _hasSetSessionId();
+
+  function _hasSetLanguage();
+
+  function _hasSetUserRegion();
+
   class Map {
     htmlElements: any;
+    accessibleMapDelegate: any;
+    events: any;
+    imageSprite: any;
+    markers: any;
+    sources: any;
+    layers: any;
 
     constructor(container: string,
                 options: ServiceOptions & CameraOptions & StyleOptions & UserInteractionOptions)
+
+    addCircles(e, t);
+
+    addContror(e, t);
+
+    clear();
+
+    dispote();
+
+    pixelsToPositions(e);
+
+    positionsToPixels(e);
+
+    stop();
+
 
     addPins(pins: Feature[],
             options?: PinLayerOptions);
@@ -75,6 +124,56 @@ declare namespace atlas {
     setUserInteraction(options?: UserInteractionOptions);
   }
 
+  class HtmlMarker {
+
+    constructor(e?, f?)
+    getOptions();
+
+    setOptions(t);
+
+    togglePopup();
+
+    _addToMapt(e);
+
+    _getId();
+
+    _removeFromMap();
+  }
+
+  class Shape {
+
+    constructor(t?, o?, r?);
+    addProperty(e, t);
+
+    getBounds();
+
+    getCoordinates();
+
+    getId();
+
+    getProperties();
+
+    getType();
+
+    isCircle();
+
+    setCoordinates(e);
+
+    setProperties(t);
+
+    toJson();
+
+    _getCoordinateDimensions(e);
+
+    _handleCircle();
+
+    _setDataSource(e);
+
+    _testCircle(e);
+
+    _toJson();
+  }
+
   class Popup {
     options?: PopupOptions;
 
@@ -84,6 +183,123 @@ declare namespace atlas {
 
     setPopupOptions(options?: PopupOptions);
 
+
+  }
+
+  namespace math {
+    function boundingBoxToPolygon(t);
+
+    function convertDistance(t, e, a, n);
+
+    function getCardinalSpline(t, e, a, n);
+
+    function getDestination(t, e, a, n);
+
+    function getDistanceTo(t, e, a);
+
+    function getEarthRadius(t);
+
+    function getGeodesicPath(t, e);
+
+    function getHeading(t, e);
+
+    function getLengthOfPath(t, e);
+
+    function getPositionAlongPath(t, e, a);
+
+    function getRegularPolygonPath(t, e, a, n, s);
+
+    function interpolate(t, e, a);
+
+    function normalizeLatitude(t);
+
+    function normalizeLongitude(t);
+  }
+
+  namespace source {
+    type t = any;
+    type o = any;
+    type e = any;
+
+    class DataSource {
+      constructor(t?, o?);
+
+      add(e, t?);
+
+      clear();
+
+      constructor(t, o);
+
+      dispose();
+
+      getOptions();
+
+      getShapeById(e);
+
+      remove(e);
+
+      setOptions(e);
+
+      toJson();
+
+      _addNoUpdate(e, t);
+
+      _addToSources(e, t);
+
+      _buildSource();
+
+      _clearNoUpdate();
+
+      _removeFromSources(e);
+
+      _toJson();
+
+      _updateShapesMap(e);
+
+      _updateSource();
+    }
+
+    class Source {
+      constructor(e?)
+    }
+
+    class VectorTileSource {
+      constructor(e?, o?);
+    }
+  }
+
+  namespace layer {
+
+    type e = any;
+    type t = any;
+    type i = any;
+    type o = any;
+    type n = any;
+
+
+    class BubbleLayer {
+      constructor(e, o, i)
+    }
+
+    class Layer {
+      constructor(t);
+    }
+
+    class LineLayer {
+      constructor(i, o, e);
+    }
+
+    class PolygonLayer {
+      constructor(t, i, e);
+    }
+
+    class SymbolLayer {
+      constructor(o, i, n);
+    }
+
+    class TileLayer {
+      constructor(i, o);
+    }
 
   }
 

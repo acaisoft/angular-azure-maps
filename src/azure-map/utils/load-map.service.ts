@@ -1,19 +1,25 @@
 import {Injectable} from '@angular/core';
 import {azureMapLazyLoader} from './azure-map-lazy-loader';
-import {Observable, of, Subject} from 'rxjs';
+import {BehaviorSubject, Observable, of, Subject} from 'rxjs';
 import {fromPromise} from 'rxjs/internal-compatibility';
+import {b} from '@angular/core/src/render3';
 
 @Injectable()
 export class LoadMapService {
 
-  mapPromise: Promise<any>;
 
   public isLoaded = false;
 
+  public isComponentLoaded = false
+
+
+
   loadedSubject = new Subject<boolean>();
+  loadedComponenet = new BehaviorSubject(false)
 
   constructor() {
   }
+
 
   load(): Observable<boolean> {
     if (!this.isLoaded) {
@@ -26,7 +32,7 @@ export class LoadMapService {
     }
   }
 
-  observableMap() {
+  observableComponent() {
     return this.loadedSubject.asObservable();
   }
 }

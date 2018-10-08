@@ -1,67 +1,106 @@
 # Angular Azure Maps
 Angular 6 Azure Maps is a wrapped MS Azure Map on Angular
 
-## How to use
+#### [Samples]
+## Getting Started
+```node 
+npm i @acaisoft/angular-azure-maps --save
+```
+
+Add to module:
+```ts
+@NgModule({
+  imports: [AmModule],
+  providers: [LoadMapService]
+```
+
+
 [AzureMapDocumentation]<br>
 First add this two line to your index.html:
 ```html
-  <link rel="stylesheet" href="https://atlas.microsoft.com/sdk/css/atlas.min.css?api-version=1.0" type="text/css" />
-  <script src="https://atlas.microsoft.com/sdk/js/atlas.min.js?api-version=1.0"></script>
+  <link rel="stylesheet" href="https://atlas.microsoft.com/sdk/css/atlas.min.css?api-version=1" type="text/css" />
+  <script src="https://atlas.microsoft.com/sdk/js/atlas.min.js?api-version=1"></script>
 ````
 Or use our lazy loading
 #### Lazy loading
 ```ts
 // in component:
-constructor(private mapService: LoadMapService) {}
-// and use load() method for expample in ngOnInit
+  key: string = '<YOUR-KEY>'
+  
+  constructor(public mapService: LoadMapService) {}
 
-ngOnInit() {
-this.mapService.load().subscribe(() => {
-  console.log('MAP WAS LOADED')
-})
-}
+  ngOnInit() {
+    // that will lazy loaded azure map script and styles
+    this.mapService.load().toPromise().then(() => {
+      atlas.setSubscriptionKey(this.key); // that inject your azure key
+    })
+  }
 ```
 <br>
 
-This `mapService` own `isLoaded` properties so you can simple use it to know when map was loaded in temaple
+To have control on map you must use <br>
+```
+@ViewChild('maper') maper: AtlasMapComponent;
+```
+
+This `mapService` own `isLoaded` properties so you can simple use it to know when map was loaded in template
 ```html
 <div *ngIf="mapService.isLoaded">
-  <am-map
+  <am-map #maper
+    [_id]="'id'"
     [initialConfig]="config"
   </am-map>
  </div>
 ```
+[_id] - its id to DOMElements, !necessary! <br>
+[initialConfig] - initial config to map
 
-To wrap this module you can add in your template:
-```html
- <am-map #maper 
- (onMapClick)="getPos($event)" // Output emiting position
- >
-```
-First input is your config to create map. Look 
 [Map Init].
 <br>
-Second is your data with map's items that you can add on map
-
 Your config should look like:
-
 ```ts
 public config = {
-    'subscription-key': 'your-key',
+    'zoom': 1.5,
+    'center': [20,20]
     'interactive': true,
   };
 ```
 Other config options: [Style Options] | [User Interaction Options] | [Service Options] | [Camera Options]
 <br>
 
-To add items you must use <br>
-`@ViewChild('maper') maper: AtlasMapComponent;`
-<br>  and <br>
-*INIT MAP:*
-```ts 
-this.maper.createMap(id, config) // Init map
-this.maper.startMapClickListener();  // If you want emit position from map (necessary if you have output(onMapClick)
+Outputs:
+```html
+ <am-map #maper 
+ (onMapClick)="getPos($event)" // Output emiting position
+ (loaded)="loadedMap()"
+ >
 ```
+(onMapClick) - its emitting position on click <br>
+(loaded) - emitting when AmComponent is loaded, after its you can for example add data:
+```ts
+mapLoaded() {
+    // Check if ViewChild is correctly init
+    if (this.maper && this.mapService.isLoaded) {
+      // use that function to load sprites to map
+      this.maper.map.events.add('load', (e) => {
+        Promise.all([
+          // Add sprite to map as icon
+          this.maper.map.imageSprite.add('my-pin', '../../../assets/eye-crossed.svg'),
+          this.maper.map.imageSprite.add('git', '../../../assets/github-small.svg')
+        ]).then((e) => {
+          this.isFirst = false;
+          this.initPoint();
+        })
+      })
+    } else {
+      setTimeout(() => this.mapLoaded(), 400)
+    }
+
+  }
+```
+
+
+
 
 *Add points to map*
 `this.maper.createPoints(features: AmFeatures)`
@@ -69,6 +108,9 @@ this.maper.startMapClickListener();  // If you want emit position from map (nece
 *Refresh points*
 `this.maper.updatePoints(features: AmFeatures)`
 <br>
+*Remove Map*
+`this.maper.removeMap() or this.maper.map.remove() <br>
+
 Your data element should by AmFeatures type:
 
 ```ts
@@ -135,18 +177,28 @@ mergeDataPoint(data) {
 Our AtlasMapComponent will create your map canvas, and add your Map Elements to map through added pins on it.<br>
 Also can added PopUps on pins through atlas-popup directive and ng-template in your parent component html file:
 ```html
-<am-map
-  [initialConfig]="config"
-  [features]="amFeatures">
-  
-<ng-template amPopup
-             let-dataElement="dataElement">
-  <!--Item you want to show in popup-->
-  <!--<div>{{ dataElement.name}}</div>-->
-  <!--<div> {{ dataElement.status }}</div>-->
-</ng-template>
+<div class="container"  *ngIf="mapService.isLoaded">
+  <am-map #maper
+          [initialConfig]="config"
+          [_id]="'id'"
+          (onMapClick)="getPos($event)"
+  (loaded)="mapLoaded()">
 
-</am-map>
+
+    <ng-template amPopup
+                 let-dataElement="dataElement">
+      <div [ngSwitch]="dataElement.type">
+        <div *ngSwitchCase="'DataCenter'" class="dc_container">
+          <div class="name">{{ dataElement.name}}</div>
+          <div class="status" [ngStyle]="{'color':dataElement.status === 'Online' ? 'blue' : 'red'}"> {{ dataElement.status }}</div>
+        </div>
+        <div *ngSwitchCase="'Office'" class="office_container">
+          <div class="name">{{ dataElement.name}}</div>
+        </div></div>
+    </ng-template>
+
+  </am-map>
+</div>
 ```
 
 
@@ -159,3 +211,4 @@ Also can added PopUps on pins through atlas-popup directive and ng-template in y
 [User Interaction Options]: https://docs.microsoft.com/pl-pl/javascript/api/azure-maps-javascript/userinteractionoptions?view=azure-iot-typescript-latest
 [Service Options]: https://docs.microsoft.com/pl-pl/javascript/api/azure-maps-javascript/serviceoptions?view=azure-iot-typescript-latest
 [Camera Options]: https://docs.microsoft.com/pl-pl/javascript/api/azure-maps-javascript/cameraoptions?view=azure-iot-typescript-latest
+[Samples]: https://github.com/srednicki95/am_samples/tree/master/src/app/dashboard
