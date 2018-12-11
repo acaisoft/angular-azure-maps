@@ -179,11 +179,19 @@ declare namespace atlas {
 
     constructor(options?: PopupOptions)
 
+    attach(map: Map);
+
+    close();
+
+    getOptions(): PopupOptions;
+
+    isOpen(): Boolean;
+
     open(map: Map);
 
+    remove();
+
     setPopupOptions(options?: PopupOptions);
-
-
   }
 
   namespace math {
