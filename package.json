@@ -1,17 +1,17 @@
 {
-  "name": "@acaisoft/angular-azure-maps",
-  "version": "1.0.0",
+  "name": "@zajacmp3/angular-azure-maps",
+  "version": "1.0.1",
   "description": "Azure Maps Angular wrapper",
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Acaisoft/angular-azure-maps.git"
+    "url": "git+https://github.com/zajacmp3/angular-azure-maps.git"
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Acaisoft/angular-azure-maps/issues"
+    "url": "https://github.com/zajacmp3/angular-azure-maps/issues"
   },
-  "homepage": "https://github.com/Acaisoft/angular-azure-maps#readme",
+  "homepage": "https://github.com/zajacmp3/angular-azure-maps#readme",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",

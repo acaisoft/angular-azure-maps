@@ -311,6 +311,27 @@ declare namespace atlas {
 
   }
 
+  namespace service {
+    class MapsURL {
+      constructor();
+      newPipeline(e);
+    }
+
+    class SubscriptionKeyCredential {
+      constructor(e);
+    }
+
+    class RouteURL {
+      constructor(pipeline: any);
+      calculateRouteDirections(e, t);
+    }
+
+    class Aborter {
+      constructor();
+      timeout(e);
+    }
+  }
+
   namespace data {
     class Point {
       coordinates: Position;
