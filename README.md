@@ -4,7 +4,7 @@ Angular 6 Azure Maps is a wrapped MS Azure Map on Angular
 #### [Samples]
 ## Getting Started
 ```node 
-npm i @acaisoft/angular-azure-maps --save
+npm i @zajacmp3/angular-azure-maps --save
 ```
 
 Add to module:

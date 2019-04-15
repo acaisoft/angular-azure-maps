@@ -179,11 +179,19 @@ declare namespace atlas {
 
     constructor(options?: PopupOptions)
 
+    attach(map: Map);
+
+    close();
+
+    getOptions(): PopupOptions;
+
+    isOpen(): Boolean;
+
     open(map: Map);
 
+    remove();
+
     setPopupOptions(options?: PopupOptions);
-
-
   }
 
   namespace math {
@@ -294,13 +302,32 @@ declare namespace atlas {
     }
 
     class SymbolLayer {
-      constructor(o, i, n);
+      constructor(o, i?, n?);
     }
 
     class TileLayer {
       constructor(i, o);
     }
 
+  }
+
+  namespace service {
+    namespace MapsURL {
+      function newPipeline(e1);
+    }
+
+    class SubscriptionKeyCredential {
+      constructor(e2);
+    }
+
+    class RouteURL {
+      constructor(pipeline: any);
+      calculateRouteDirections(e3, t4);
+    }
+
+    namespace Aborter {
+      function timeout(e5);
+    }
   }
 
   namespace data {
@@ -486,4 +513,3 @@ declare interface TrafficOptions {
   flow?: 'none' | 'relative' | 'absolute' | 'relative-delay'; // The type of traffic flow to display
   incidents?: boolean; // Whether to display incidents on the map.
 }
-
