@@ -302,7 +302,7 @@ declare namespace atlas {
     }
 
     class SymbolLayer {
-      constructor(o, i, n);
+      constructor(o, i?, n?);
     }
 
     class TileLayer {
@@ -312,23 +312,21 @@ declare namespace atlas {
   }
 
   namespace service {
-    class MapsURL {
-      constructor();
-      newPipeline(e);
+    namespace MapsURL {
+      function newPipeline(e1);
     }
 
     class SubscriptionKeyCredential {
-      constructor(e);
+      constructor(e2);
     }
 
     class RouteURL {
       constructor(pipeline: any);
-      calculateRouteDirections(e, t);
+      calculateRouteDirections(e3, t4);
     }
 
-    class Aborter {
-      constructor();
-      timeout(e);
+    namespace Aborter {
+      function timeout(e5);
     }
   }
 
@@ -515,4 +513,3 @@ declare interface TrafficOptions {
   flow?: 'none' | 'relative' | 'absolute' | 'relative-delay'; // The type of traffic flow to display
   incidents?: boolean; // Whether to display incidents on the map.
 }
-
