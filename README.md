@@ -18,8 +18,9 @@ Add to module:
 [AzureMapDocumentation]<br>
 First add this two line to your index.html:
 ```html
-  <link rel="stylesheet" href="https://atlas.microsoft.com/sdk/css/atlas.min.css?api-version=1" type="text/css" />
-  <script src="https://atlas.microsoft.com/sdk/js/atlas.min.js?api-version=1"></script>
+    <!-- Add references to the Azure Maps Map control JavaScript and CSS files. -->
+    <link href="https://atlas.microsoft.com/sdk/javascript/mapcontrol/3/atlas.min.css" rel="stylesheet" />
+    <script src="https://atlas.microsoft.com/sdk/javascript/mapcontrol/3/atlas.min.js"></script>
 ````
 Or use our lazy loading
 #### Lazy loading
